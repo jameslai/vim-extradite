@@ -92,7 +92,7 @@ function! s:ExtraditeLoadCommitData(bang, base_file_name, template_cmd, ...) abo
   if (g:extradite_showhash)
     let cmd = a:template_cmd + ['--pretty=format:%h	%an	%d	%s', '--', path]
   else
-    let cmd = a:template_cmd + ['--pretty=format:%an	%d	%s', '--', path]
+    let cmd = a:template_cmd + ['--pretty=format:%<(120,trunc)%s %<(25)%ar %<(20)%an [%h]', '--', path]
   endif
   let basecmd = escape(call(fugitive#buffer().repo().git_command,cmd,fugitive#buffer().repo()), '%')
   let extradata_cmd = a:template_cmd + ['--pretty=format:%h	%ad', '--', path]
@@ -149,7 +149,7 @@ function! s:ExtraditeLoadCommitData(bang, base_file_name, template_cmd, ...) abo
   " Some components of the log may have no value. Or may insert whitespace of their own. Remove the repeated
   " whitespace that result from this. Side effect: removes intended whitespace in the commit data.
   setlocal modifiable
-  silent! keepjumps %s/\(\s\)\s\+/\1/g
+  " silent! keepjumps %s/\(\s\)\s\+/\1/g
   keepjumps normal! gg
   setlocal nomodified nomodifiable bufhidden=wipe nonumber nowrap foldcolumn=0 nofoldenable filetype=extradite ts=1 cursorline nobuflisted so=0 nolist
 endfunction
